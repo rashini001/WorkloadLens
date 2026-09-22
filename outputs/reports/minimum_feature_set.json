@@ -1,0 +1,49 @@
+{
+  "target_accuracy": 0.85,
+  "steps": [
+    {
+      "n_features": 37,
+      "accuracy": 0.575
+    }
+  ],
+  "minimum_feature_set": [
+    "Q12 Exam Difficulty",
+    "Q20 Energy",
+    "Q20 Family Pressure",
+    "Q12 Viva Difficulty",
+    "Q20 Motivation",
+    "Q20 Financial Pressure",
+    "Q12 Assignment Difficulty",
+    "Q6 Presentations",
+    "Q7 Subjects",
+    "Q6 Exams",
+    "Q5 Part-time",
+    "Q13 New Subjects",
+    "Q19 Sleep",
+    "Q9 Notice",
+    "Q15 Self-study",
+    "Q10 Study Time",
+    "Q1 Year",
+    "Q6 Assignments",
+    "Q6 Vivas",
+    "Q17 Lost Time",
+    "Q16 Self-study Hours",
+    "Q8 Overlap",
+    "Q14 Untaught Content",
+    "Q18 Study Space",
+    "Q11 Group Work",
+    "Q3 University_Government University",
+    "Q2 Degree_Other",
+    "Q4 Residence_Rented accommodation",
+    "Q4 Residence_With family at home",
+    "Q3 University_Private University / Institute",
+    "Q2 Degree_Business / Management",
+    "Q3 University_NIBM (National Institute of Business Management)",
+    "Q4 Residence_University hostel / boarding",
+    "Q2 Degree_Computing / IT",
+    "Q2 Degree_Science",
+    "Q2 Degree_Engineering",
+    "Q2 Degree_Arts / Humanities"
+  ],
+  "achieved_accuracy": 0.575
+}

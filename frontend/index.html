@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WorkloadLens — demo console</title>
+<style>
+  :root{
+    --paper:#F5F6F2; --ink:#1B221E; --line:#D8DCD3;
+    --teal:#2F6F5E; --teal-dark:#1F4C40;
+    --low:#3A7D5C; --mod:#B9862F; --high:#B34B33;
+    --panel:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    line-height:1.5;
+  }
+  header{
+    padding:2.2rem 2rem 1.4rem; border-bottom:1px solid var(--line);
+  }
+  header h1{
+    font-family: Georgia, "Source Serif Pro", serif;
+    font-weight:600; font-size:1.9rem; margin:0 0 .3rem;
+    letter-spacing:-0.01em;
+  }
+  header p{ margin:0; color:#5B655F; max-width:60ch; font-size:.97rem;}
+  main{
+    display:grid; grid-template-columns: 1fr 1fr; gap:1.5rem;
+    max-width:1180px; margin:1.6rem auto; padding:0 2rem 3rem;
+  }
+  @media (max-width: 880px){ main{grid-template-columns:1fr;} }
+  section.panel{
+    background:var(--panel); border:1px solid var(--line); border-radius:6px;
+    padding:1.4rem 1.5rem;
+  }
+  h2{ font-size:1rem; text-transform:none; margin:0 0 1rem; font-weight:600; }
+  label{ display:block; font-size:.82rem; color:#4A544E; margin:.7rem 0 .25rem; }
+  select, input, textarea{
+    width:100%; padding:.5rem .6rem; border:1px solid var(--line); border-radius:4px;
+    font-size:.9rem; background:#FCFCFA; color:var(--ink); font-family:inherit;
+  }
+  textarea{ min-height:70px; resize:vertical; }
+  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:0 1rem; }
+  button{
+    margin-top:1.3rem; width:100%; padding:.75rem; border:none; border-radius:4px;
+    background:var(--teal); color:#fff; font-size:.95rem; font-weight:600;
+    cursor:pointer; transition:background .15s ease;
+  }
+  button:hover{ background:var(--teal-dark); }
+  button:disabled{ background:#9AA69E; cursor:default; }
+  .risk-badge{
+    display:inline-block; padding:.3rem .8rem; border-radius:999px;
+    color:#fff; font-weight:600; font-size:.85rem;
+  }
+  .risk-Low{ background:var(--low); }
+  .risk-Moderate{ background:var(--mod); }
+  .risk-High{ background:var(--high); }
+  .result-block{ margin-bottom:1.2rem; }
+  .result-block h3{ font-size:.8rem; text-transform:uppercase; letter-spacing:.04em; color:#6C766F; margin:0 0 .4rem; }
+  .guidance-text{ white-space:pre-wrap; font-size:.93rem; }
+  .sources li{ font-size:.82rem; color:#4A544E; }
+  .placeholder{ color:#8B948E; font-size:.9rem; }
+  footer{ text-align:center; color:#8B948E; font-size:.8rem; padding-bottom:2rem; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>WorkloadLens</h1>
+  <p>Demo console — fills in a sample student workload profile, runs the trained
+  risk classifier, and shows RAG-grounded guidance alongside a baseline (no-retrieval)
+  LLM response. Requires the API running at <code>http://localhost:8000</code>.</p>
+</header>
+
+<main>
+  <section class="panel" id="form-panel">
+    <h2>Student workload profile</h2>
+    <div class="grid2">
+      <div><label>Year</label>
+        <select id="q1"><option>Year 1</option><option>Year 2</option><option selected>Year 3</option><option>Year 4 / Final Year</option></select></div>
+      <div><label>Degree</label>
+        <select id="q2"><option>Business / Management</option><option selected>Computing / IT</option><option>Engineering</option><option>Science</option><option>Arts / Humanities</option><option>Other</option></select></div>
+      <div><label>University</label>
+        <select id="q3"><option selected>NIBM (National Institute of Business Management)</option><option>Government University</option><option>Private University / Institute</option></select></div>
+      <div><label>Residence</label>
+        <select id="q4"><option>With family at home</option><option selected>University hostel / boarding</option><option>Rented accommodation</option></select></div>
+      <div><label>Part-time work</label>
+        <select id="q5"><option>No</option><option selected>Yes - 10 to 20 hours per week</option><option>Yes - less than 10 hours per week</option><option>Yes - more than 20 hours per week</option></select></div>
+      <div><label>Assignments due</label>
+        <select id="q6a"><option>0</option><option>1</option><option>2</option><option selected>3 or more</option></select></div>
+      <div><label>Deadline overlap</label>
+        <select id="q8"><option>None – all spread out</option><option>2 overlapping</option><option>3 overlapping</option><option selected>4 or more overlapping</option></select></div>
+      <div><label>Notice given</label>
+        <select id="q9"><option>More than 2 weeks</option><option>1 – 2 weeks</option><option>4 – 7 days</option><option selected>1 – 3 days (very short notice)</option></select></div>
+      <div><label>Study time vs. required</label>
+        <select id="q10"><option>Had more time than required</option><option>Roughly matched</option><option>Required slightly more than available</option><option selected>Required much more than available</option></select></div>
+      <div><label>Sleep per night</label>
+        <select id="q19"><option>8 hours or more</option><option>6 – 7 hours</option><option>4 – 5 hours</option><option selected>Less than 4 hours</option></select></div>
+    </div>
+
+    <label>Describe your situation (optional — improves guidance)</label>
+    <textarea id="freetext">I have three assignments due the same week and a part-time job, and I'm losing sleep trying to keep up.</textarea>
+
+    <button id="runBtn" onclick="runCompare()">Classify &amp; generate guidance</button>
+  </section>
+
+  <section class="panel" id="results-panel">
+    <h2>Results</h2>
+    <div id="results"><p class="placeholder">Run a profile to see the risk classification and generated guidance here.</p></div>
+  </section>
+</main>
+
+<footer>WorkloadLens research prototype — not a substitute for professional academic or counselling support.</footer>
+
+<script>
+const API = "http://localhost:8000";
+
+function buildProfile(){
+  return {
+    "Q1 Year": document.getElementById("q1").value,
+    "Q2 Degree": document.getElementById("q2").value,
+    "Q3 University": document.getElementById("q3").value,
+    "Q4 Residence": document.getElementById("q4").value,
+    "Q5 Part-time": document.getElementById("q5").value,
+    "Q6 Assignments": document.getElementById("q6a").value,
+    "Q6 Exams": "1", "Q6 Vivas": "0", "Q6 Presentations": "1",
+    "Q7 Subjects": "5 – 6 subjects",
+    "Q8 Overlap": document.getElementById("q8").value,
+    "Q9 Notice": document.getElementById("q9").value,
+    "Q10 Study Time": document.getElementById("q10").value,
+    "Q11 Group Work": "Yes – 1 group task",
+    "Q12 Assignment Difficulty": 4, "Q12 Exam Difficulty": 3, "Q12 Viva Difficulty": 3,
+    "Q13 New Subjects": "1 new or unfamiliar subject",
+    "Q14 Untaught Content": "Some tasks required untaught content",
+    "Q15 Self-study": "Moderate – 3 – 5 extra hours",
+    "Q16 Self-study Hours": "3 – 4 hours",
+    "Q17 Lost Time": "1 – 2 hours",
+    "Q18 Study Space": "Sometimes available",
+    "Q19 Sleep": document.getElementById("q19").value,
+    "Q20 Energy": 2, "Q20 Motivation": 2, "Q20 Financial Pressure": 3, "Q20 Family Pressure": 3
+  };
+}
+
+async function runCompare(){
+  const btn = document.getElementById("runBtn");
+  const results = document.getElementById("results");
+  btn.disabled = true; btn.textContent = "Running…";
+  results.innerHTML = '<p class="placeholder">Contacting the API…</p>';
+
+  try{
+    const resp = await fetch(`${API}/api/compare`, {
+      method: "POST",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify({ profile: buildProfile(), free_text: document.getElementById("freetext").value })
+    });
+    if(!resp.ok) throw new Error(await resp.text());
+    const data = await resp.json();
+
+    results.innerHTML = `
+      <div class="result-block">
+        <h3>Risk classification</h3>
+        <span class="risk-badge risk-${data.risk.risk_class}">${data.risk.risk_class}</span>
+        <span style="margin-left:.6rem;color:#6C766F;font-size:.85rem;">
+          confidence: ${data.risk.confidence ? (data.risk.confidence*100).toFixed(0)+'%' : 'n/a'}
+        </span>
+      </div>
+      <div class="result-block">
+        <h3>WorkloadLens (RAG-grounded)</h3>
+        <div class="guidance-text">${data.workloadlens_response}</div>
+      </div>
+      <div class="result-block">
+        <h3>Baseline LLM (no retrieval)</h3>
+        <div class="guidance-text">${data.baseline_llm_response}</div>
+      </div>
+    `;
+  } catch(err){
+    results.innerHTML = `<p style="color:var(--high)">Error: ${err.message}. Is the API running at ${API}? See README step 5.</p>`;
+  } finally {
+    btn.disabled = false; btn.textContent = "Classify & generate guidance";
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+{
+  "best_model_name": "XGBoost",
+  "feature_columns": [
+    "Q1 Year",
+    "Q5 Part-time",
+    "Q6 Assignments",
+    "Q6 Exams",
+    "Q6 Vivas",
+    "Q6 Presentations",
+    "Q7 Subjects",
+    "Q8 Overlap",
+    "Q9 Notice",
+    "Q10 Study Time",
+    "Q11 Group Work",
+    "Q12 Assignment Difficulty",
+    "Q12 Exam Difficulty",
+    "Q12 Viva Difficulty",
+    "Q13 New Subjects",
+    "Q14 Untaught Content",
+    "Q15 Self-study",
+    "Q16 Self-study Hours",
+    "Q17 Lost Time",
+    "Q18 Study Space",
+    "Q19 Sleep",
+    "Q20 Energy",
+    "Q20 Motivation",
+    "Q20 Financial Pressure",
+    "Q20 Family Pressure",
+    "Q2 Degree_Arts / Humanities",
+    "Q2 Degree_Business / Management",
+    "Q2 Degree_Computing / IT",
+    "Q2 Degree_Engineering",
+    "Q2 Degree_Other",
+    "Q2 Degree_Science",
+    "Q3 University_Government University",
+    "Q3 University_NIBM (National Institute of Business Management)",
+    "Q3 University_Private University / Institute",
+    "Q4 Residence_Rented accommodation",
+    "Q4 Residence_University hostel / boarding",
+    "Q4 Residence_With family at home"
+  ],
+  "risk_classes": [
+    "High",
+    "Low",
+    "Moderate"
+  ],
+  "label_encoding": {
+    "0": "High",
+    "1": "Low",
+    "2": "Moderate"
+  }
+}
