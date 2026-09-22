@@ -3,119 +3,335 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>WorkloadLens — demo console</title>
+<title>WorkloadLens</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,380..640&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+
   :root{
-    --paper:#F5F6F2; --ink:#1B221E; --line:#D8DCD3;
-    --teal:#2F6F5E; --teal-dark:#1F4C40;
-    --low:#3A7D5C; --mod:#B9862F; --high:#B34B33;
-    --panel:#FFFFFF;
+    --violet:  #7C5CFF;
+    --blue:    #2FA5E6;
+    --teal:    #17C3A2;
+    --cyan:    #4FE3E0;
+
+    --low:     #34D399;
+    --moderate:#FBBF24;
+    --high:    #FB7185;
+
+    --glass:      rgba(255,255,255,0.08);
+    --glass-hi:   rgba(255,255,255,0.16);
+    --glass-line: rgba(255,255,255,0.20);
+    --text:       #F3F6FA;
+    --text-dim:   #AEB9CC;
   }
-  *{box-sizing:border-box;}
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
   body{
-    margin:0; background:var(--paper); color:var(--ink);
-    font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
-    line-height:1.5;
+    margin:0; min-height:100vh; color:var(--text);
+    font-family:"Space Grotesk", -apple-system, sans-serif;
+    background:#0B0E1A;
+    position:relative; overflow-x:hidden;
   }
-  header{
-    padding:2.2rem 2rem 1.4rem; border-bottom:1px solid var(--line);
+  h1, h2, .display{ font-family:"Fraunces", Georgia, serif; }
+  :focus-visible{ outline:2px solid var(--cyan); outline-offset:3px; }
+
+  /* ---------- Aurora background ---------- */
+  .aurora{
+    position:fixed; inset:0; z-index:-1; overflow:hidden;
+    background:radial-gradient(120% 100% at 50% -10%, #171B3A 0%, #0B0E1A 60%);
   }
-  header h1{
-    font-family: Georgia, "Source Serif Pro", serif;
-    font-weight:600; font-size:1.9rem; margin:0 0 .3rem;
-    letter-spacing:-0.01em;
+  .orb{
+    position:absolute; border-radius:50%; filter:blur(80px); opacity:.55;
+    will-change:transform;
   }
-  header p{ margin:0; color:#5B655F; max-width:60ch; font-size:.97rem;}
+  .orb-1{
+    width:560px; height:560px; top:-160px; left:-120px;
+    background:radial-gradient(circle, var(--violet), transparent 70%);
+    animation: drift1 22s ease-in-out infinite;
+  }
+  .orb-2{
+    width:620px; height:620px; top:10%; right:-200px;
+    background:radial-gradient(circle, var(--blue), transparent 70%);
+    animation: drift2 28s ease-in-out infinite;
+  }
+  .orb-3{
+    width:520px; height:520px; bottom:-220px; left:22%;
+    background:radial-gradient(circle, var(--teal), transparent 70%);
+    animation: drift3 34s ease-in-out infinite;
+  }
+  .orb.settling{ transition: background 1.1s ease, opacity 1.1s ease; }
+
+  @keyframes drift1{
+    0%,100%{ transform:translate(0,0) scale(1); }
+    50%{     transform:translate(60px,40px) scale(1.12); }
+  }
+  @keyframes drift2{
+    0%,100%{ transform:translate(0,0) scale(1); }
+    50%{     transform:translate(-50px,60px) scale(1.08); }
+  }
+  @keyframes drift3{
+    0%,100%{ transform:translate(0,0) scale(1); }
+    50%{     transform:translate(40px,-50px) scale(1.14); }
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{ padding:4.6rem 2rem 3rem; text-align:center; position:relative; }
+  .hero-inner{ max-width:740px; margin:0 auto; }
+  .eyebrow-mark{
+    display:inline-flex; align-items:center; gap:.5rem;
+    font-size:.85rem; color:var(--cyan); margin-bottom:1.1rem;
+  }
+  .eyebrow-mark .dot{
+    width:8px; height:8px; border-radius:50%;
+    background:var(--cyan); box-shadow:0 0 12px 2px var(--cyan);
+    animation: pulse-dot 2.2s ease-in-out infinite;
+  }
+  @keyframes pulse-dot{ 0%,100%{opacity:.5;} 50%{opacity:1;} }
+
+  .hero h1{
+    font-size:clamp(2.3rem, 5vw, 3.4rem); font-weight:580; margin:0 0 1rem;
+    letter-spacing:-0.015em; line-height:1.12;
+    background:linear-gradient(100deg, #FFFFFF 20%, var(--cyan) 55%, var(--violet) 85%);
+    -webkit-background-clip:text; background-clip:text; color:transparent;
+  }
+  .hero p{ margin:0 auto; max-width:48ch; color:var(--text-dim); font-size:1.05rem; }
+
+  /* ---------- Layout ---------- */
   main{
-    display:grid; grid-template-columns: 1fr 1fr; gap:1.5rem;
-    max-width:1180px; margin:1.6rem auto; padding:0 2rem 3rem;
+    max-width:1100px; margin:0 auto; padding:1.4rem 2rem 4.5rem;
+    display:grid; grid-template-columns: 0.92fr 1.08fr; gap:1.8rem;
+    align-items:start;
   }
-  @media (max-width: 880px){ main{grid-template-columns:1fr;} }
-  section.panel{
-    background:var(--panel); border:1px solid var(--line); border-radius:6px;
-    padding:1.4rem 1.5rem;
+  @media (max-width: 880px){ main{ grid-template-columns:1fr; } }
+
+  /* ---------- Glass panel base ---------- */
+  .glass{
+    background:var(--glass);
+    backdrop-filter: blur(22px); -webkit-backdrop-filter: blur(22px);
+    border:1px solid var(--glass-line);
+    border-radius:20px;
+    box-shadow: 0 1px 0 0 rgba(255,255,255,.10) inset, 0 20px 60px -25px rgba(0,0,0,.6);
+    position:relative;
   }
-  h2{ font-size:1rem; text-transform:none; margin:0 0 1rem; font-weight:600; }
-  label{ display:block; font-size:.82rem; color:#4A544E; margin:.7rem 0 .25rem; }
-  select, input, textarea{
-    width:100%; padding:.5rem .6rem; border:1px solid var(--line); border-radius:4px;
-    font-size:.9rem; background:#FCFCFA; color:var(--ink); font-family:inherit;
+
+  /* ---------- Form panel ---------- */
+  .form-panel{ padding:2rem 2rem 2.2rem; }
+  .form-panel h2{ font-size:1.3rem; font-weight:520; margin:0 0 .3rem; }
+  .form-panel .kicker{ font-size:.87rem; color:var(--text-dim); margin:0 0 1.6rem; }
+
+  .row2{ display:grid; grid-template-columns:1fr 1fr; gap:0 1rem; }
+  .field{ margin-bottom:1.15rem; }
+  .field label{ display:block; font-size:.8rem; color:var(--text-dim); margin-bottom:.35rem; }
+
+  select, textarea{
+    width:100%; border:1px solid var(--glass-line); border-radius:10px;
+    background:rgba(255,255,255,0.05); color:var(--text);
+    padding:.6rem .7rem; font-size:.9rem; font-family:inherit;
+    transition:border-color .18s ease, background .18s ease, box-shadow .18s ease;
   }
-  textarea{ min-height:70px; resize:vertical; }
-  .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:0 1rem; }
-  button{
-    margin-top:1.3rem; width:100%; padding:.75rem; border:none; border-radius:4px;
-    background:var(--teal); color:#fff; font-size:.95rem; font-weight:600;
-    cursor:pointer; transition:background .15s ease;
+  select:focus, textarea:focus{
+    outline:none; border-color:var(--cyan); background:rgba(255,255,255,0.08);
+    box-shadow:0 0 0 3px rgba(79,227,224,0.18);
   }
-  button:hover{ background:var(--teal-dark); }
-  button:disabled{ background:#9AA69E; cursor:default; }
-  .risk-badge{
-    display:inline-block; padding:.3rem .8rem; border-radius:999px;
-    color:#fff; font-weight:600; font-size:.85rem;
+  select option{ color:#111; }
+  textarea{ min-height:78px; resize:vertical; line-height:1.5; }
+
+  .submit-btn{
+    margin-top:1.5rem; width:100%; padding:.9rem 1rem; border:none; border-radius:12px;
+    background:linear-gradient(100deg, var(--violet), var(--blue) 55%, var(--cyan));
+    background-size:180% 180%;
+    color:#0B0E1A; font-weight:700; font-size:.96rem; cursor:pointer;
+    position:relative; overflow:hidden;
+    transition:transform .16s ease, box-shadow .16s ease, background-position .5s ease;
   }
-  .risk-Low{ background:var(--low); }
-  .risk-Moderate{ background:var(--mod); }
-  .risk-High{ background:var(--high); }
-  .result-block{ margin-bottom:1.2rem; }
-  .result-block h3{ font-size:.8rem; text-transform:uppercase; letter-spacing:.04em; color:#6C766F; margin:0 0 .4rem; }
-  .guidance-text{ white-space:pre-wrap; font-size:.93rem; }
-  .sources li{ font-size:.82rem; color:#4A544E; }
-  .placeholder{ color:#8B948E; font-size:.9rem; }
-  footer{ text-align:center; color:#8B948E; font-size:.8rem; padding-bottom:2rem; }
+  .submit-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 12px 30px -10px rgba(124,92,255,.55);
+    background-position:100% 0%;
+  }
+  .submit-btn:active{ transform:translateY(0); }
+  .submit-btn:disabled{ cursor:default; opacity:.85; transform:none; }
+  .submit-btn .shimmer{
+    position:absolute; inset:0; opacity:0;
+    background:linear-gradient(100deg, transparent, rgba(255,255,255,.55), transparent);
+    background-size:200% 100%;
+  }
+  .submit-btn.loading .shimmer{ opacity:1; animation: shimmer 1.1s linear infinite; }
+  @keyframes shimmer{ from{ background-position:150% 0; } to{ background-position:-50% 0; } }
+
+  /* ---------- Result panel ---------- */
+  .result-panel{
+    padding:2rem 2.1rem 2.2rem; min-height:400px;
+    transition: box-shadow .7s ease, border-color .7s ease;
+  }
+  .result-panel.risk-Low{     box-shadow:0 0 0 1px rgba(52,211,153,.35), 0 25px 70px -30px rgba(52,211,153,.35); border-color:rgba(52,211,153,.4); }
+  .result-panel.risk-Moderate{box-shadow:0 0 0 1px rgba(251,191,36,.35), 0 25px 70px -30px rgba(251,191,36,.35); border-color:rgba(251,191,36,.4); }
+  .result-panel.risk-High{    box-shadow:0 0 0 1px rgba(251,113,133,.35), 0 25px 70px -30px rgba(251,113,133,.35); border-color:rgba(251,113,133,.4); }
+
+  .empty-state{ color:var(--text-dim); font-size:.95rem; max-width:32ch; }
+  .empty-state .display{ font-size:1.5rem; color:var(--text); display:block; margin-bottom:.6rem; }
+
+  .result{ animation: reveal .55s cubic-bezier(.2,.8,.2,1) both; }
+  @keyframes reveal{
+    from{ opacity:0; transform:translateY(10px) scale(.985); }
+    to{   opacity:1; transform:translateY(0) scale(1); }
+  }
+
+  .risk-row{ display:flex; align-items:center; gap:.8rem; margin-bottom:1.7rem; }
+  .risk-word{ font-family:"Fraunces", serif; font-size:2.1rem; font-weight:560; }
+  .risk-Low .risk-word{     background:linear-gradient(100deg,#34D399,#6EE7B7); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .risk-Moderate .risk-word{background:linear-gradient(100deg,#FBBF24,#FDE68A); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .risk-High .risk-word{    background:linear-gradient(100deg,#FB7185,#FDA4AF); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .confidence{
+    font-size:.78rem; padding:.28rem .65rem; border-radius:999px;
+    background:rgba(255,255,255,0.08); border:1px solid var(--glass-line); color:var(--text-dim);
+  }
+
+  .block{ margin-bottom:1.6rem; }
+  .block h3{
+    font-size:.76rem; text-transform:uppercase; letter-spacing:.07em;
+    color:var(--text-dim); font-weight:600; margin:0 0 .55rem;
+  }
+  .block .body-text{ font-size:.94rem; white-space:pre-wrap; color:#E7EBF3; }
+  .baseline-block{ border-top:1px dashed var(--glass-line); padding-top:1.4rem; }
+  .baseline-block .body-text{ color:var(--text-dim); }
+
+  .error-text{ color:#FDA4AF; font-size:.9rem; }
+
+  footer{
+    text-align:center; color:var(--text-dim); font-size:.82rem;
+    padding:1rem 2rem 3rem; max-width:60ch; margin:0 auto;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .orb{ animation:none; }
+    .eyebrow-mark .dot{ animation:none; }
+    .result{ animation:none; }
+    .submit-btn.loading .shimmer{ animation:none; }
+    html{ scroll-behavior:auto; }
+  }
 </style>
 </head>
 <body>
 
-<header>
-  <h1>WorkloadLens</h1>
-  <p>Demo console — fills in a sample student workload profile, runs the trained
-  risk classifier, and shows RAG-grounded guidance alongside a baseline (no-retrieval)
-  LLM response. Requires the API running at <code>http://localhost:8000</code>.</p>
-</header>
+<div class="aurora" aria-hidden="true">
+  <div class="orb orb-1" id="orb1"></div>
+  <div class="orb orb-2" id="orb2"></div>
+  <div class="orb orb-3" id="orb3"></div>
+</div>
+
+<section class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow-mark"><span class="dot"></span>Demo console · localhost:8000</span>
+    <h1>See your workload clearly, before the deadline does.</h1>
+    <p>Describe your week. WorkloadLens reads the shape of it, then grounds its guidance in what's actually worked for students in Sri Lankan universities — not generic productivity advice.</p>
+  </div>
+</section>
 
 <main>
-  <section class="panel" id="form-panel">
-    <h2>Student workload profile</h2>
-    <div class="grid2">
-      <div><label>Year</label>
-        <select id="q1"><option>Year 1</option><option>Year 2</option><option selected>Year 3</option><option>Year 4 / Final Year</option></select></div>
-      <div><label>Degree</label>
-        <select id="q2"><option>Business / Management</option><option selected>Computing / IT</option><option>Engineering</option><option>Science</option><option>Arts / Humanities</option><option>Other</option></select></div>
-      <div><label>University</label>
-        <select id="q3"><option selected>NIBM (National Institute of Business Management)</option><option>Government University</option><option>Private University / Institute</option></select></div>
-      <div><label>Residence</label>
-        <select id="q4"><option>With family at home</option><option selected>University hostel / boarding</option><option>Rented accommodation</option></select></div>
-      <div><label>Part-time work</label>
-        <select id="q5"><option>No</option><option selected>Yes - 10 to 20 hours per week</option><option>Yes - less than 10 hours per week</option><option>Yes - more than 20 hours per week</option></select></div>
-      <div><label>Assignments due</label>
-        <select id="q6a"><option>0</option><option>1</option><option>2</option><option selected>3 or more</option></select></div>
-      <div><label>Deadline overlap</label>
-        <select id="q8"><option>None – all spread out</option><option>2 overlapping</option><option>3 overlapping</option><option selected>4 or more overlapping</option></select></div>
-      <div><label>Notice given</label>
-        <select id="q9"><option>More than 2 weeks</option><option>1 – 2 weeks</option><option>4 – 7 days</option><option selected>1 – 3 days (very short notice)</option></select></div>
-      <div><label>Study time vs. required</label>
-        <select id="q10"><option>Had more time than required</option><option>Roughly matched</option><option>Required slightly more than available</option><option selected>Required much more than available</option></select></div>
-      <div><label>Sleep per night</label>
-        <select id="q19"><option>8 hours or more</option><option>6 – 7 hours</option><option>4 – 5 hours</option><option selected>Less than 4 hours</option></select></div>
-    </div>
+  <section class="glass form-panel">
+    <h2>Your week</h2>
+    <p class="kicker">Fill in what's true right now — this doesn't need to be exact.</p>
 
-    <label>Describe your situation (optional — improves guidance)</label>
-    <textarea id="freetext">I have three assignments due the same week and a part-time job, and I'm losing sleep trying to keep up.</textarea>
+    <fieldset style="border:none; margin:0; padding:0;">
+      <div class="row2">
+        <div class="field">
+          <label for="q1">Year</label>
+          <select id="q1"><option>Year 1</option><option>Year 2</option><option selected>Year 3</option><option>Year 4 / Final Year</option></select>
+        </div>
+        <div class="field">
+          <label for="q2">Degree</label>
+          <select id="q2"><option>Business / Management</option><option selected>Computing / IT</option><option>Engineering</option><option>Science</option><option>Arts / Humanities</option><option>Other</option></select>
+        </div>
+      </div>
 
-    <button id="runBtn" onclick="runCompare()">Classify &amp; generate guidance</button>
+      <div class="row2">
+        <div class="field">
+          <label for="q3">University</label>
+          <select id="q3"><option selected>NIBM</option><option>Government University</option><option>Private University / Institute</option></select>
+        </div>
+        <div class="field">
+          <label for="q4">Residence</label>
+          <select id="q4"><option>With family at home</option><option selected>University hostel</option><option>Rented accommodation</option></select>
+        </div>
+      </div>
+
+      <div class="row2">
+        <div class="field">
+          <label for="q5">Part-time work</label>
+          <select id="q5"><option>No</option><option selected>Yes - 10 to 20 hours per week</option><option>Yes - less than 10 hours per week</option><option>Yes - more than 20 hours per week</option></select>
+        </div>
+        <div class="field">
+          <label for="q6a">Assignments due</label>
+          <select id="q6a"><option>0</option><option>1</option><option>2</option><option selected>3 or more</option></select>
+        </div>
+      </div>
+
+      <div class="row2">
+        <div class="field">
+          <label for="q8">Deadline overlap</label>
+          <select id="q8"><option>None – all spread out</option><option>2 overlapping</option><option>3 overlapping</option><option selected>4 or more overlapping</option></select>
+        </div>
+        <div class="field">
+          <label for="q9">Notice given</label>
+          <select id="q9"><option>More than 2 weeks</option><option>1 – 2 weeks</option><option>4 – 7 days</option><option selected>1 – 3 days (very short notice)</option></select>
+        </div>
+      </div>
+
+      <div class="row2">
+        <div class="field">
+          <label for="q10">Study time vs. required</label>
+          <select id="q10"><option>Had more time than required</option><option>Roughly matched</option><option>Required slightly more than available</option><option selected>Required much more than available</option></select>
+        </div>
+        <div class="field">
+          <label for="q19">Sleep per night</label>
+          <select id="q19"><option>8 hours or more</option><option>6 – 7 hours</option><option>4 – 5 hours</option><option selected>Less than 4 hours</option></select>
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="freetext">Describe your situation (optional — sharpens the guidance)</label>
+        <textarea id="freetext">I have three assignments due the same week and a part-time job, and I'm losing sleep trying to keep up.</textarea>
+      </div>
+    </fieldset>
+
+    <button class="submit-btn" id="runBtn" onclick="runCompare()">
+      <span class="btn-label">Get my guidance</span>
+      <span class="shimmer" aria-hidden="true"></span>
+    </button>
   </section>
 
-  <section class="panel" id="results-panel">
-    <h2>Results</h2>
-    <div id="results"><p class="placeholder">Run a profile to see the risk classification and generated guidance here.</p></div>
+  <section class="glass result-panel" id="pane">
+    <div class="empty-state" id="emptyState">
+      <span class="display">Nothing to read yet</span>
+      Fill in your week on the left and press "Get my guidance" — your risk read and grounded guidance will appear here.
+    </div>
+    <div id="resultArea"></div>
   </section>
 </main>
 
-<footer>WorkloadLens research prototype — not a substitute for professional academic or counselling support.</footer>
+<footer>WorkloadLens is a research prototype for academic time-management support. It does not give medical or mental-health advice — if you're struggling, please reach out to your university's student welfare or counselling service.</footer>
 
 <script>
 const API = "http://localhost:8000";
+
+const RISK_ORB_COLORS = {
+  Low:      ["#34D399", "#6EE7B7", "#17C3A2"],
+  Moderate: ["#FBBF24", "#FDE68A", "#F59E0B"],
+  High:     ["#FB7185", "#FDA4AF", "#F43F5E"],
+};
+
+function settleOrbs(riskClass){
+  const colors = RISK_ORB_COLORS[riskClass];
+  if(!colors) return;
+  ["orb1","orb2","orb3"].forEach((id, i) => {
+    const el = document.getElementById(id);
+    el.classList.add("settling");
+    el.style.background = `radial-gradient(circle, ${colors[i]}, transparent 70%)`;
+  });
+}
 
 function buildProfile(){
   return {
@@ -145,9 +361,16 @@ function buildProfile(){
 
 async function runCompare(){
   const btn = document.getElementById("runBtn");
-  const results = document.getElementById("results");
-  btn.disabled = true; btn.textContent = "Running…";
-  results.innerHTML = '<p class="placeholder">Contacting the API…</p>';
+  const pane = document.getElementById("pane");
+  const emptyState = document.getElementById("emptyState");
+  const resultArea = document.getElementById("resultArea");
+  const label = btn.querySelector(".btn-label");
+
+  btn.disabled = true; btn.classList.add("loading");
+  label.textContent = "Reading your week…";
+  emptyState.style.display = "none";
+  resultArea.innerHTML = "";
+  pane.className = "glass result-panel";
 
   try{
     const resp = await fetch(`${API}/api/compare`, {
@@ -157,28 +380,34 @@ async function runCompare(){
     });
     if(!resp.ok) throw new Error(await resp.text());
     const data = await resp.json();
+    const risk = data.risk.risk_class;
 
-    results.innerHTML = `
-      <div class="result-block">
-        <h3>Risk classification</h3>
-        <span class="risk-badge risk-${data.risk.risk_class}">${data.risk.risk_class}</span>
-        <span style="margin-left:.6rem;color:#6C766F;font-size:.85rem;">
-          confidence: ${data.risk.confidence ? (data.risk.confidence*100).toFixed(0)+'%' : 'n/a'}
-        </span>
-      </div>
-      <div class="result-block">
-        <h3>WorkloadLens (RAG-grounded)</h3>
-        <div class="guidance-text">${data.workloadlens_response}</div>
-      </div>
-      <div class="result-block">
-        <h3>Baseline LLM (no retrieval)</h3>
-        <div class="guidance-text">${data.baseline_llm_response}</div>
+    pane.className = `glass result-panel risk-${risk}`;
+    settleOrbs(risk);
+
+    resultArea.innerHTML = `
+      <div class="result">
+        <div class="risk-row">
+          <span class="risk-word">${risk} risk</span>
+          <span class="confidence">${data.risk.confidence ? Math.round(data.risk.confidence*100)+'% confidence' : ''}</span>
+        </div>
+
+        <div class="block">
+          <h3>WorkloadLens guidance</h3>
+          <div class="body-text">${data.workloadlens_response}</div>
+        </div>
+
+        <div class="block baseline-block">
+          <h3>Baseline (no grounding), for comparison</h3>
+          <div class="body-text">${data.baseline_llm_response}</div>
+        </div>
       </div>
     `;
   } catch(err){
-    results.innerHTML = `<p style="color:var(--high)">Error: ${err.message}. Is the API running at ${API}? See README step 5.</p>`;
+    resultArea.innerHTML = `<p class="error-text">Couldn't reach the API: ${err.message}. Confirm it's running at ${API}.</p>`;
   } finally {
-    btn.disabled = false; btn.textContent = "Classify & generate guidance";
+    btn.disabled = false; btn.classList.remove("loading");
+    label.textContent = "Get my guidance";
   }
 }
 </script>
