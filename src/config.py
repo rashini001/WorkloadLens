@@ -6,7 +6,7 @@ from pathlib import Path
 
 # ---- Paths -----------------------------------------------------------------
 ROOT_DIR = Path(__file__).resolve().parent.parent
-DATA_RAW = ROOT_DIR / "data" / "raw" / "WorkloadLens_1000_Synthetic_Responses.xlsx"
+DATA_RAW = ROOT_DIR / "data" / "raw" / "WorkloadLens_Real_Responses.xlsx"
 DATA_PROCESSED = ROOT_DIR / "data" / "processed"
 MODELS_DIR = ROOT_DIR / "outputs" / "models"
 CHROMA_DIR = ROOT_DIR / "outputs" / "chroma_db"
@@ -17,8 +17,7 @@ for d in [DATA_PROCESSED, MODELS_DIR, CHROMA_DIR, REPORTS_DIR]:
     d.mkdir(parents=True, exist_ok=True)
 
 # ---- Raw survey columns -----------------------------------------------------
-# These must match the header row of WorkloadLens_1000_Synthetic_Responses.xlsx
-# (or whatever real survey export you replace it with) exactly.
+
 RAW_COLUMNS = [
     "Q1 Year", "Q2 Degree", "Q3 University", "Q4 Residence", "Q5 Part-time",
     "Q6 Assignments", "Q6 Exams", "Q6 Vivas", "Q6 Presentations", "Q7 Subjects",

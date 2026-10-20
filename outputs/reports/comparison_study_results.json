@@ -1,0 +1,82 @@
+{
+  "n_raters": 30,
+  "n_scenarios": 12,
+  "per_criterion": {
+    "Relevance": {
+      "n_paired_raters": 30,
+      "mean_workloadlens": 3.822,
+      "sd_workloadlens": 0.414,
+      "mean_baseline": 2.769,
+      "sd_baseline": 0.526,
+      "mean_difference": 1.053,
+      "cohens_dz": 1.245,
+      "shapiro_p_of_differences": 0.0009,
+      "differences_look_normal": false,
+      "paired_t_test": {
+        "t": 6.82,
+        "p": 1.726e-07
+      },
+      "wilcoxon_signed_rank": {
+        "statistic": 0.0,
+        "p": 1.715e-06
+      }
+    },
+    "Actionability": {
+      "n_paired_raters": 30,
+      "mean_workloadlens": 3.783,
+      "sd_workloadlens": 0.431,
+      "mean_baseline": 2.733,
+      "sd_baseline": 0.519,
+      "mean_difference": 1.05,
+      "cohens_dz": 1.251,
+      "shapiro_p_of_differences": 0.0,
+      "differences_look_normal": false,
+      "paired_t_test": {
+        "t": 6.853,
+        "p": 1.583e-07
+      },
+      "wilcoxon_signed_rank": {
+        "statistic": 0.0,
+        "p": 1.711e-06
+      }
+    },
+    "Cultural fit": {
+      "n_paired_raters": 30,
+      "mean_workloadlens": 3.811,
+      "sd_workloadlens": 0.446,
+      "mean_baseline": 2.639,
+      "sd_baseline": 0.517,
+      "mean_difference": 1.172,
+      "cohens_dz": 1.368,
+      "shapiro_p_of_differences": 0.0005,
+      "differences_look_normal": false,
+      "paired_t_test": {
+        "t": 7.493,
+        "p": 2.935e-08
+      },
+      "wilcoxon_signed_rank": {
+        "statistic": 0.0,
+        "p": 1.718e-06
+      }
+    },
+    "Specificity": {
+      "n_paired_raters": 30,
+      "mean_workloadlens": 3.817,
+      "sd_workloadlens": 0.435,
+      "mean_baseline": 2.611,
+      "sd_baseline": 0.636,
+      "mean_difference": 1.206,
+      "cohens_dz": 1.31,
+      "shapiro_p_of_differences": 0.0002,
+      "differences_look_normal": false,
+      "paired_t_test": {
+        "t": 7.174,
+        "p": 6.752e-08
+      },
+      "wilcoxon_signed_rank": {
+        "statistic": 0.0,
+        "p": 1.717e-06
+      }
+    }
+  }
+}
