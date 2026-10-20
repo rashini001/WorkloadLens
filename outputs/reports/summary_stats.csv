@@ -1,35 +1,35 @@
 ,count,unique,top,freq,mean,std,min,25%,50%,75%,max
-Q1 Year,1000,4,Year 4 / Final Year,260,,,,,,,
-Q2 Degree,1000,6,Business / Management,187,,,,,,,
-Q3 University,1000,3,Government University,350,,,,,,,
-Q4 Residence,1000,3,University hostel / boarding,343,,,,,,,
-Q5 Part-time,1000,4,Yes - more than 20 hours per week,271,,,,,,,
-Q6 Assignments,1000,4,3 or more,266,,,,,,,
-Q6 Exams,1000,4,0,264,,,,,,,
-Q6 Vivas,1000,4,2,258,,,,,,,
-Q6 Presentations,1000,4,1,266,,,,,,,
-Q7 Subjects,1000,4,1 – 2 subjects,273,,,,,,,
-Q8 Overlap,1000,4,None – all spread out,265,,,,,,,
-Q9 Notice,1000,4,More than 2 weeks,277,,,,,,,
-Q10 Study Time,1000,4,Had more time than required,263,,,,,,,
-Q11 Group Work,1000,3,No group work,342,,,,,,,
-Q12 Assignment Difficulty,1000.0,,,,3.003,1.4293474154431576,1.0,2.0,3.0,4.0,5.0
-Q12 Exam Difficulty,1000.0,,,,2.986,1.4226130281379434,1.0,2.0,3.0,4.0,5.0
-Q12 Viva Difficulty,1000.0,,,,3.027,1.4492658042510238,1.0,2.0,3.0,4.0,5.0
-Q13 New Subjects,1000,4,1 new or unfamiliar subject,264,,,,,,,
-Q14 Untaught Content,1000,3,No – all tasks matched taught content,343,,,,,,,
-Q15 Self-study,1000,4,None – lecture notes were fully sufficient,288,,,,,,,
-Q16 Self-study Hours,1000,4,Less than 1 hour,272,,,,,,,
-Q17 Lost Time,1000,4,More than 4 hours,273,,,,,,,
-Q18 Study Space,1000,3,Rarely or never available,337,,,,,,,
-Q19 Sleep,1000,4,6 – 7 hours,265,,,,,,,
-Q20 Energy,1000.0,,,,3.018,1.3984389981803393,1.0,2.0,3.0,4.0,5.0
-Q20 Motivation,1000.0,,,,3.001,1.4188065449567184,1.0,2.0,3.0,4.0,5.0
-Q20 Financial Pressure,1000.0,,,,2.962,1.42006076369026,1.0,2.0,3.0,4.0,5.0
-Q20 Family Pressure,1000.0,,,,2.983,1.3728057384770793,1.0,2.0,3.0,4.0,5.0
-Q21 Late Tasks,1000,4,2 tasks submitted late,263,,,,,,,
-Q22 Missed Classes,1000,4,No – attended all classes,260,,,,,,,
-Q23 Time Management,1000.0,,,,3.044,1.4234079141588614,1.0,2.0,3.0,4.0,5.0
-Q23 Work Quality,1000.0,,,,3.001,1.4314496316839287,1.0,2.0,3.0,4.0,5.0
-Q24 Workload Impact,1000,4,Slight negative impact,261,,,,,,,
-Q25 AI Usefulness,1000,5,Moderately useful,207,,,,,,,
+Q1 Year,957,4,Year 3,258,,,,,,,
+Q2 Degree,957,6,Computing / IT,186,,,,,,,
+Q3 University,957,3,Government University,339,,,,,,,
+Q4 Residence,957,3,Rented accommodation,327,,,,,,,
+Q5 Part-time,957,4,Yes - 10 to 20 hours per week,256,,,,,,,
+Q6 Assignments,957,4,3 or more,259,,,,,,,
+Q6 Exams,957,4,1,243,,,,,,,
+Q6 Vivas,957,4,3 or more,257,,,,,,,
+Q6 Presentations,957,4,2,264,,,,,,,
+Q7 Subjects,957,4,1 – 2 subjects,266,,,,,,,
+Q8 Overlap,957,4,None – all spread out,253,,,,,,,
+Q9 Notice,957,4,More than 2 weeks,276,,,,,,,
+Q10 Study Time,957,4,Required much more than available,255,,,,,,,
+Q11 Group Work,957,3,Yes – 2 or more group tasks,329,,,,,,,
+Q12 Assignment Difficulty,957.0,,,,3.107628004179728,1.4178753904982715,1.0,2.0,3.0,4.0,5.0
+Q12 Exam Difficulty,957.0,,,,3.0292580982236155,1.3975399685341245,1.0,2.0,3.0,4.0,5.0
+Q12 Viva Difficulty,957.0,,,,3.109717868338558,1.416977019677226,1.0,2.0,3.0,4.0,5.0
+Q13 New Subjects,957,4,2 new or unfamiliar subjects,281,,,,,,,
+Q14 Untaught Content,957,3,Some tasks required untaught content,359,,,,,,,
+Q15 Self-study,957,4,None – lecture notes were fully sufficient,267,,,,,,,
+Q16 Self-study Hours,957,4,1 – 2 hours,255,,,,,,,
+Q17 Lost Time,957,4,More than 4 hours,266,,,,,,,
+Q18 Study Space,957,3,Always available,326,,,,,,,
+Q19 Sleep,957,4,4 – 5 hours,252,,,,,,,
+Q20 Energy,957.0,,,,3.0376175548589344,1.357855560755859,1.0,2.0,3.0,4.0,5.0
+Q20 Motivation,957.0,,,,2.954022988505747,1.4376792271367196,1.0,2.0,3.0,4.0,5.0
+Q20 Financial Pressure,957.0,,,,3.0428422152560084,1.3998070209101063,1.0,2.0,3.0,4.0,5.0
+Q20 Family Pressure,957.0,,,,3.0564263322884013,1.364122236075057,1.0,2.0,3.0,4.0,5.0
+Q21 Late Tasks,957,4,1 task submitted late,260,,,,,,,
+Q22 Missed Classes,957,4,Missed 2 – 3 classes,259,,,,,,,
+Q23 Time Management,957.0,,,,3.0229885057471266,1.3742606429354307,1.0,2.0,3.0,4.0,5.0
+Q23 Work Quality,957.0,,,,2.9529780564263324,1.4011665837947502,1.0,2.0,3.0,4.0,5.0
+Q24 Workload Impact,957,4,Moderate negative impact,289,,,,,,,
+Q25 AI Usefulness,957,5,Extremely useful – I would use this regularly,206,,,,,,,

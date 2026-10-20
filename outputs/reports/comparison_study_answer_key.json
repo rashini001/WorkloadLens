@@ -1,0 +1,50 @@
+[
+  {
+    "profile_label": "light_workload",
+    "a_is_workloadlens": true
+  },
+  {
+    "profile_label": "sleep_deprived_only",
+    "a_is_workloadlens": false
+  },
+  {
+    "profile_label": "part_time_heavy_only",
+    "a_is_workloadlens": false
+  },
+  {
+    "profile_label": "moderate_two_overlap",
+    "a_is_workloadlens": true
+  },
+  {
+    "profile_label": "group_work_heavy",
+    "a_is_workloadlens": false
+  },
+  {
+    "profile_label": "exam_heavy_no_overlap",
+    "a_is_workloadlens": true
+  },
+  {
+    "profile_label": "new_subjects_heavy",
+    "a_is_workloadlens": false
+  },
+  {
+    "profile_label": "moderate_overlap_financial_pressure",
+    "a_is_workloadlens": true
+  },
+  {
+    "profile_label": "heavy_workload",
+    "a_is_workloadlens": false
+  },
+  {
+    "profile_label": "heavy_workload_no_parttime",
+    "a_is_workloadlens": false
+  },
+  {
+    "profile_label": "extreme_worst_case",
+    "a_is_workloadlens": false
+  },
+  {
+    "profile_label": "moderate_balanced",
+    "a_is_workloadlens": false
+  }
+]

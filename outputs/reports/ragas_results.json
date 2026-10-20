@@ -1,0 +1,58 @@
+{
+  "n_profiles": 12,
+  "judge_backend": "ollama",
+  "judge_model": "llama3:latest",
+  "n_timed_out_or_missing": 0,
+  "mean_faithfulness": 0.357,
+  "mean_answer_relevancy": 0.45,
+  "per_profile": [
+    {
+      "faithfulness": 0.0,
+      "answer_relevancy": 0.43535065118232125
+    },
+    {
+      "faithfulness": 0.8695652173913043,
+      "answer_relevancy": 0.6179702837990316
+    },
+    {
+      "faithfulness": 0.0,
+      "answer_relevancy": 0.5208974389915187
+    },
+    {
+      "faithfulness": 0.0,
+      "answer_relevancy": 0.3445229212953284
+    },
+    {
+      "faithfulness": 0.875,
+      "answer_relevancy": 0.39470193486907457
+    },
+    {
+      "faithfulness": 0.45454545454545453,
+      "answer_relevancy": 0.4486172098569279
+    },
+    {
+      "faithfulness": 0.391304347826087,
+      "answer_relevancy": 0.45016682332985947
+    },
+    {
+      "faithfulness": 0.13333333333333333,
+      "answer_relevancy": 0.38576227431642796
+    },
+    {
+      "faithfulness": 0.0,
+      "answer_relevancy": 0.4675389379269536
+    },
+    {
+      "faithfulness": 0.7142857142857143,
+      "answer_relevancy": 0.3117203190946325
+    },
+    {
+      "faithfulness": 0.7692307692307693,
+      "answer_relevancy": 0.622278084530102
+    },
+    {
+      "faithfulness": 0.07142857142857142,
+      "answer_relevancy": 0.3966967146291614
+    }
+  ]
+}

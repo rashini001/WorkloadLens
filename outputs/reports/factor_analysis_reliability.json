@@ -1,0 +1,75 @@
+{
+  "n_respondents": 957,
+  "items_tested": [
+    "Q12 Assignment Difficulty",
+    "Q12 Exam Difficulty",
+    "Q12 Viva Difficulty",
+    "Q20 Energy",
+    "Q20 Motivation",
+    "Q20 Financial Pressure",
+    "Q20 Family Pressure",
+    "Q23 Time Management",
+    "Q23 Work Quality"
+  ],
+  "kmo_overall": 0.538,
+  "kmo_per_item_weakest_first": [
+    {
+      "item": "Q12 Assignment Difficulty",
+      "kmo": 0.452
+    },
+    {
+      "item": "Q12 Exam Difficulty",
+      "kmo": 0.478
+    },
+    {
+      "item": "Q20 Financial Pressure",
+      "kmo": 0.513
+    },
+    {
+      "item": "Q20 Energy",
+      "kmo": 0.517
+    },
+    {
+      "item": "Q20 Motivation",
+      "kmo": 0.557
+    },
+    {
+      "item": "Q12 Viva Difficulty",
+      "kmo": 0.561
+    },
+    {
+      "item": "Q20 Family Pressure",
+      "kmo": 0.561
+    },
+    {
+      "item": "Q23 Time Management",
+      "kmo": 0.565
+    },
+    {
+      "item": "Q23 Work Quality",
+      "kmo": 0.582
+    }
+  ],
+  "bartlett_chi_square": 82.23,
+  "bartlett_p_value": 0.0,
+  "factor_analysis_appropriate": false,
+  "note": "KMO and/or Bartlett's test indicate these items do NOT share enough common variance for factor analysis to be meaningful \u2014 this is itself quantitative evidence that these are independent single-item indicators rather than a multidimensional scale, not a data-quality failure.",
+  "sensitivity_check_dropping_weakest_items": [
+    {
+      "dropped": "Q12 Assignment Difficulty",
+      "items_remaining": 8,
+      "kmo_after_dropping": 0.568
+    },
+    {
+      "dropped": "Q12 Exam Difficulty",
+      "items_remaining": 7,
+      "kmo_after_dropping": 0.578
+    },
+    {
+      "dropped": "Q20 Financial Pressure",
+      "items_remaining": 6,
+      "kmo_after_dropping": 0.577
+    }
+  ],
+  "sensitivity_check_reached_060": false
+}

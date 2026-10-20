@@ -1,0 +1,30 @@
+{
+  "n_runs": 10,
+  "hardware_description": "Windows 11, Intel64 Family 6 Model 140 Stepping 1, GenuineIntel",
+  "llm_backend": "ollama",
+  "stages": {
+    "classification": {
+      "mean_seconds": 0.386,
+      "max_seconds": 1.934,
+      "min_seconds": 0.026
+    },
+    "retrieval": {
+      "mean_seconds": 2.085,
+      "max_seconds": 18.485,
+      "min_seconds": 0.054
+    },
+    "rag_generation": {
+      "mean_seconds": 115.113,
+      "max_seconds": 133.805,
+      "min_seconds": 98.751
+    },
+    "baseline_generation": {
+      "mean_seconds": 95.35,
+      "max_seconds": 108.09,
+      "min_seconds": 74.476
+    },
+    "total_rag_pipeline": {
+      "mean_seconds": 117.584
+    }
+  }
+}

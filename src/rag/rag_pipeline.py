@@ -1,90 +1,26 @@
 """
-Retrieval-augmented generation pipeline (Chapter 3.5 "RAG Augmented Response
-System").
+Retrieval-augmented generation pipeline (Chapter 3.5).
 
-Retrieval strategy: the FULL workload profile (risk class + top influential
-features + the student's free-text description, if given) is used as the
-query — not just a topic keyword — per Chapter 3.3's "profile-based
-retrieval" design intended to fix the panel's undifferentiated-response
-concern. Retrieval runs separately against each of the three KB layers
-(cultural / intervention / local) so every generated response draws on all
-three, then the LLM synthesises them into one answer.
+UPDATED to use workloadlens_kb.py's search() as the retrieval backend
+instead of the earlier markdown-chunk ChromaDB collection — this is the
+real, PDF-sourced, 18+ document knowledge base, with retrieval filtered by
+the student's institution type and discipline (profile-based retrieval,
+per Chapter 3.3 and your KB metadata spreadsheet's own "Notes" sheet).
 
-Two generation backends are supported — pick one via LLM_BACKEND below:
-  - "ollama"    : free, fully local (matches your stated tech choice —
-                  Llama 3 via Ollama). Requires `ollama serve` running and
-                  `ollama pull llama3` done once. No API key needed.
-  - "anthropic" : Claude via the Anthropic API. Requires ANTHROPIC_API_KEY
-                  in your environment. Useful if you don't want to run a
-                  local model on your laptop for the evaluation study.
-
-Also exposes `generate_baseline(...)`, which answers the SAME prompt with NO
-retrieved context — this is your baseline LLM for the RQ3/RQ4 comparison
-study in Chapter 3.6.
+Generation backend unchanged: set WORKLOADLENS_LLM_BACKEND=ollama (default)
+or =anthropic, same as before.
 """
 import os
 import sys
 from pathlib import Path
 
-import chromadb
-from sentence_transformers import SentenceTransformer
-
 sys.path.append(str(Path(__file__).resolve().parent.parent))
-from config import CHROMA_DIR  # noqa: E402
-from rag.build_kb import EMBEDDING_MODEL, COLLECTION_NAME  # noqa: E402
+sys.path.append(str(Path(__file__).resolve().parent.parent.parent))  # project root, where workloadlens_kb.py lives
+import workloadlens_kb  # noqa: E402
 
-LLM_BACKEND = os.environ.get("WORKLOADLENS_LLM_BACKEND", "ollama")  # "ollama" | "anthropic"
+LLM_BACKEND = os.environ.get("WORKLOADLENS_LLM_BACKEND", "ollama")
 OLLAMA_MODEL = os.environ.get("WORKLOADLENS_OLLAMA_MODEL", "llama3")
 ANTHROPIC_MODEL = os.environ.get("WORKLOADLENS_ANTHROPIC_MODEL", "claude-sonnet-4-6")
-
-_embed_model = None
-_collection = None
-
-
-def _load():
-    global _embed_model, _collection
-    if _embed_model is None:
-        _embed_model = SentenceTransformer(EMBEDDING_MODEL)
-        client = chromadb.PersistentClient(path=str(CHROMA_DIR))
-        _collection = client.get_collection(COLLECTION_NAME)
-    return _embed_model, _collection
-
-
-def build_query_text(risk_result: dict, free_text: str = "") -> str:
-    """Combine the ML output + free-text description into one retrieval query."""
-    parts = [f"Workload risk level: {risk_result.get('risk_class', 'Unknown')}."]
-    features = risk_result.get("top_influential_features") or []
-    if features:
-        readable = ", ".join(f.replace("_", " ") for f in features)
-        parts.append(f"Most influential workload factors for this student: {readable}.")
-    if free_text:
-        parts.append(f"Student's own description: {free_text}")
-    return " ".join(parts)
-
-
-def retrieve(query_text: str, k_per_layer: int = 2):
-    _, collection = _load()
-    model, _ = _load()
-    query_embedding = model.encode([query_text]).tolist()
-
-    retrieved = []
-    for layer in ["cultural", "intervention", "local"]:
-        res = collection.query(
-            query_embeddings=query_embedding,
-            n_results=k_per_layer,
-            where={"layer": layer},
-        )
-        for doc, meta, dist in zip(res["documents"][0], res["metadatas"][0], res["distances"][0]):
-            retrieved.append({"text": doc, "metadata": meta, "distance": dist})
-    return retrieved
-
-
-def _format_context(chunks):
-    lines = []
-    for c in chunks:
-        lines.append(f"[{c['metadata']['layer']}] {c['text']} (source: {c['metadata']['source']})")
-    return "\n\n".join(lines)
-
 
 SYSTEM_PROMPT = (
     "You are WorkloadLens, an academic time-management support assistant for "
@@ -98,26 +34,80 @@ SYSTEM_PROMPT = (
 )
 
 
+# ---- maps a student's survey answers to workloadlens_kb's filter labels ----
+def infer_institution(profile: dict) -> str:
+    """Maps Q3 University's answer to workloadlens_kb's institution labels
+    ("state" / "non_state"). Extend this if you add more University options."""
+    university = (profile.get("Q3 University") or "").lower()
+    if "government" in university:
+        return "state"
+    if "nibm" in university or "private" in university:
+        return "non_state"
+    return None  # unknown -> no institution filter applied
+
+
+def infer_discipline(profile: dict) -> str:
+    """Maps Q2 Degree's answer to workloadlens_kb's discipline labels. Your
+    survey currently has no medical/allied-health degree option, so those KB
+    documents will only surface via workloadlens_kb's own relax-filter
+    fallback, not a direct match — that's expected, not a bug."""
+    degree = (profile.get("Q2 Degree") or "").lower()
+    if "business" in degree or "management" in degree:
+        return "management"
+    return None  # general / unmapped -> no discipline filter applied
+
+
+def build_query_text(risk_result: dict, free_text: str = "") -> str:
+    parts = [f"Workload risk level: {risk_result.get('risk_class', 'Unknown')}."]
+    features = risk_result.get("top_influential_features") or []
+    if features:
+        readable = ", ".join(f.replace("_", " ") for f in features)
+        parts.append(f"Most influential workload factors for this student: {readable}.")
+    if free_text:
+        parts.append(f"Student's own description: {free_text}")
+    return " ".join(parts)
+
+
+def retrieve(query_text: str, profile: dict = None, k_per_layer: int = 2):
+    institution = infer_institution(profile) if profile else None
+    discipline = infer_discipline(profile) if profile else None
+    results_by_layer = workloadlens_kb.search(
+        query_text, institution=institution, discipline=discipline, k=k_per_layer
+    )
+    # flatten workloadlens_kb's {layer_name: [(id, text, meta, dist), ...]}
+    # into the flat chunk-list shape the rest of this file expects
+    flat = []
+    for layer_name, hits in results_by_layer.items():
+        for cid, text, meta, dist in hits:
+            flat.append({"text": text, "metadata": meta, "distance": dist, "layer_name": layer_name})
+    return flat
+
+
+def _format_context(chunks):
+    lines = []
+    for c in chunks:
+        meta = c["metadata"]
+        citation = f"{meta.get('title', 'Unknown source')} ({meta.get('year', 'n.d.')})"
+        lines.append(f"[{c['layer_name']}] {c['text']} (source: {citation})")
+    return "\n\n".join(lines)
+
+
 def _call_ollama(prompt: str) -> str:
     import requests
     resp = requests.post(
         "http://localhost:11434/api/generate",
-         json={"model": OLLAMA_MODEL, "prompt": prompt, "system": SYSTEM_PROMPT, "stream": False, "keep_alive": "30m"},
+        json={"model": OLLAMA_MODEL, "prompt": prompt, "system": SYSTEM_PROMPT, "stream": False},
         timeout=600,
     )
-    if resp.status_code >= 400:
-        print("OLLAMA ERROR BODY:", resp.text)
     resp.raise_for_status()
     return resp.json()["response"].strip()
 
 
 def _call_anthropic(prompt: str) -> str:
     import anthropic
-    client = anthropic.Anthropic()  # reads ANTHROPIC_API_KEY from env
+    client = anthropic.Anthropic()
     msg = client.messages.create(
-        model=ANTHROPIC_MODEL,
-        max_tokens=500,
-        system=SYSTEM_PROMPT,
+        model=ANTHROPIC_MODEL, max_tokens=500, system=SYSTEM_PROMPT,
         messages=[{"role": "user", "content": prompt}],
     )
     return msg.content[0].text.strip()
@@ -131,14 +121,14 @@ def _call_llm(prompt: str) -> str:
     raise ValueError(f"Unknown LLM_BACKEND: {LLM_BACKEND}")
 
 
-def generate_rag_response(risk_result: dict, free_text: str = "") -> dict:
+def generate_rag_response(risk_result: dict, free_text: str = "", profile: dict = None) -> dict:
     query_text = build_query_text(risk_result, free_text)
-    chunks = retrieve(query_text)
+    chunks = retrieve(query_text, profile=profile)
     context = _format_context(chunks)
 
     prompt = (
         f"Student workload profile:\n{query_text}\n\n"
-        f"Relevant grounded knowledge (three layers: cultural, intervention, local):\n"
+        f"Relevant grounded knowledge (three layers: Sri Lankan context, interventions, local resources):\n"
         f"{context}\n\n"
         f"Using the above context, write time-management guidance tailored "
         f"specifically to this student's workload profile."
@@ -148,7 +138,6 @@ def generate_rag_response(risk_result: dict, free_text: str = "") -> dict:
 
 
 def generate_baseline(risk_result: dict, free_text: str = "") -> dict:
-    """Same prompt, NO retrieved context — the RQ3/RQ4 comparison baseline."""
     query_text = build_query_text(risk_result, free_text)
     prompt = (
         f"Student workload profile:\n{query_text}\n\n"
@@ -159,13 +148,11 @@ def generate_baseline(risk_result: dict, free_text: str = "") -> dict:
 
 
 if __name__ == "__main__":
-    example_risk = {
-        "risk_class": "High",
-        "top_influential_features": ["Q8 Overlap", "Q19 Sleep", "Q5 Part-time"],
-    }
+    example_risk = {"risk_class": "High", "top_influential_features": ["Q8 Overlap", "Q19 Sleep"]}
+    example_profile = {"Q2 Degree": "Business / Management", "Q3 University": "NIBM"}
     result = generate_rag_response(
-        example_risk,
-        free_text="I have three assignments due the same week and a part-time job.",
+        example_risk, free_text="I have three assignments due the same week and a part-time job.",
+        profile=example_profile,
     )
     print("RAG ANSWER:\n", result["answer"])
-    print("\nRETRIEVED CHUNK IDS:", [c["metadata"]["file"] for c in result["retrieved_chunks"]])
+    print("\nRETRIEVED:", [(c["layer_name"], c["metadata"].get("title")) for c in result["retrieved_chunks"]])
