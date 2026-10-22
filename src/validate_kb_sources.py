@@ -1,25 +1,4 @@
-"""
-Checks your docs/ folder against WorkloadLens_KB_metadata.xlsx BEFORE you
-run the slow `python workloadlens_kb.py build` — answers "can all my files
-actually be used?" in seconds instead of finding out partway through a
-multi-minute embedding run.
 
-Catches, specifically:
-  1. Spreadsheet rows marked "Use" (not Drop) with NO matching file in docs/
-  2. Files in docs/ whose ID number doesn't match ANY spreadsheet row
-     (stray files — typo'd filename, or a file for a Dropped/removed ID)
-  3. Duplicate IDs — e.g. BOTH 2.pdf and 2.html present for the same ID.
-     workloadlens_kb.py's build() silently picks just one of these
-     (whichever glob() returns first) and ignores the other — you want to
-     know about this, not have it decided for you silently.
-  4. Files that extract to suspiciously little text (<500 characters) —
-     usually means a scanned/image-only PDF, a login/paywall page, or a
-     mostly-empty download. Same threshold build() itself warns about, but
-     this tells you BEFORE embedding starts, not partway through it.
-
-Usage:
-    python validate_kb_sources.py
-"""
 import sys
 from pathlib import Path
 

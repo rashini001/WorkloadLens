@@ -1,33 +1,4 @@
-"""
-Turns your raw Google Forms export into the clean WorkloadLens_*.xlsx format
-that preprocessing.py expects (same columns/answer text as config.RAW_COLUMNS
-and preprocessing.ORDINAL_MAPS).
 
-This is step 1 of using your REAL data — run this BEFORE preprocessing.py.
-
-Usage:
-    python clean_real_survey.py "path/to/your Form responses export.csv"
-
-Produces:
-    data/raw/WorkloadLens_Real_Responses.xlsx   <- feed this to preprocessing.py
-    outputs/reports/data_cleaning_log.json      <- your Chapter 5.4.1 [N]/[n] numbers
-
-What it does, in order:
-1. Renames the 35 long Google-Forms question headers to the short internal
-   names (Q1 Year, Q2 Degree, ...) by POSITION, not exact text match, so it's
-   robust to tiny whitespace/wording differences in your export.
-2. Standardises a handful of answer-text inconsistencies found in your data
-   (typos, inconsistent dash characters from form edits over time) so every
-   response maps onto the SAME category — see TEXT_CORRECTIONS below. Open
-   that dict and extend it if your actual column names/values differ even
-   slightly from the ones it was written against.
-3. Drops: fully-blank rows, rows with any missing answer (incomplete
-   submissions), and exact duplicate rows (same timestamp = accidental
-   double-submit). Logs exactly how many of each, for your methodology
-   write-up.
-4. Casts the Q12/Q20/Q23 Likert columns to clean integers.
-5. Saves the result as an .xlsx with EXACTLY config.RAW_COLUMNS as headers.
-"""
 import argparse
 import json
 import sys

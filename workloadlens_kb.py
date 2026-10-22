@@ -1,21 +1,4 @@
-"""
-WorkloadLens knowledge base: build + search
 
-Setup (once):
-    pip install pandas openpyxl chromadb sentence-transformers pypdf beautifulsoup4 lxml
-
-Folder layout:
-    workloadlens_kb.py
-    WorkloadLens_KB_metadata.xlsx
-    docs/            <- put each document here, named by its ID: 1.pdf, 12.pdf, 26.html, 29.txt ...
-
-Build the knowledge base:
-    python workloadlens_kb.py build
-
-Ask a question (profile options are optional):
-    python workloadlens_kb.py search "I have 4 deadlines this week and I keep putting things off" \
-        --institution non_state --discipline computing
-"""
 
 import argparse
 import re

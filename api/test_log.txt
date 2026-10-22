@@ -10,3 +10,15 @@ RAG response time: 210.9 s
 Baseline response time: 80.6 s
 Total (compare): 291.5 s
 ================
+
+=== TEST LOG ===
+Risk: {'risk_class': 'Moderate', 'confidence': 0.47788044810295105, 'class_probabilities': {'High': 0.4243583083152771, 'Low': 0.09776131063699722, 'Moderate': 0.47788044810295105}, 'top_influential_features': ['Q5 Part-time', 'Q20 Energy', 'Q16 Self-study Hours', 'Q8 Overlap', 'Q20 Family Pressure']}
+Chunks retrieved: 4
+  layer: 2 | source: None
+  layer: 2 | source: None
+  layer: 3 | source: None
+  layer: 3 | source: None
+RAG response time: 282.9 s
+Baseline response time: 83.0 s
+Total (compare): 365.9 s
+================

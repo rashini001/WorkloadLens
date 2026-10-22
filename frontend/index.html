@@ -239,61 +239,61 @@
       <div class="row2">
         <div class="field">
           <label for="q1">Year</label>
-          <select id="q1"><option>Year 1</option><option>Year 2</option><option selected>Year 3</option><option>Year 4 / Final Year</option></select>
+          <select id="q1"><option value="" selected disabled>Select…</option><option>Year 1</option><option>Year 2</option><option>Year 3</option><option>Year 4 / Final Year</option></select>
         </div>
         <div class="field">
           <label for="q2">Degree</label>
-          <select id="q2"><option>Business / Management</option><option selected>Computing / IT</option><option>Engineering</option><option>Science</option><option>Arts / Humanities</option><option>Other</option></select>
+          <select id="q2"><option value="" selected disabled>Select…</option><option>Business / Management</option><option>Computing / IT</option><option>Engineering</option><option>Science</option><option>Arts / Humanities</option><option>Other</option></select>
         </div>
       </div>
 
       <div class="row2">
         <div class="field">
           <label for="q3">University</label>
-          <select id="q3"><option selected>NIBM</option><option>Government University</option><option>Private University / Institute</option></select>
+          <select id="q3"><option value="" selected disabled>Select…</option><option>NIBM</option><option>Government University</option><option>Private University / Institute</option></select>
         </div>
         <div class="field">
           <label for="q4">Residence</label>
-          <select id="q4"><option>With family at home</option><option selected>University hostel</option><option>Rented accommodation</option></select>
+          <select id="q4"><option value="" selected disabled>Select…</option><option>With family at home</option><option>University hostel</option><option>Rented accommodation</option></select>
         </div>
       </div>
 
       <div class="row2">
         <div class="field">
           <label for="q5">Part-time work</label>
-          <select id="q5"><option>No</option><option selected>Yes - 10 to 20 hours per week</option><option>Yes - less than 10 hours per week</option><option>Yes - more than 20 hours per week</option></select>
+          <select id="q5"><option value="" selected disabled>Select…</option><option>No</option><option>Yes - 10 to 20 hours per week</option><option>Yes - less than 10 hours per week</option><option>Yes - more than 20 hours per week</option></select>
         </div>
         <div class="field">
           <label for="q6a">Assignments due</label>
-          <select id="q6a"><option>0</option><option>1</option><option>2</option><option selected>3 or more</option></select>
+          <select id="q6a"><option value="" selected disabled>Select…</option><option>0</option><option>1</option><option>2</option><option>3 or more</option></select>
         </div>
       </div>
 
       <div class="row2">
         <div class="field">
           <label for="q8">Deadline overlap</label>
-          <select id="q8"><option>None – all spread out</option><option>2 overlapping</option><option>3 overlapping</option><option selected>4 or more overlapping</option></select>
+          <select id="q8"><option value="" selected disabled>Select…</option><option>None – all spread out</option><option>2 overlapping</option><option>3 overlapping</option><option>4 or more overlapping</option></select>
         </div>
         <div class="field">
           <label for="q9">Notice given</label>
-          <select id="q9"><option>More than 2 weeks</option><option>1 – 2 weeks</option><option>4 – 7 days</option><option selected>1 – 3 days (very short notice)</option></select>
+          <select id="q9"><option value="" selected disabled>Select…</option><option>More than 2 weeks</option><option>1 – 2 weeks</option><option>4 – 7 days</option><option>1 – 3 days (very short notice)</option></select>
         </div>
       </div>
 
       <div class="row2">
         <div class="field">
           <label for="q10">Study time vs. required</label>
-          <select id="q10"><option>Had more time than required</option><option>Roughly matched</option><option>Required slightly more than available</option><option selected>Required much more than available</option></select>
+          <select id="q10"><option value="" selected disabled>Select…</option><option>Had more time than required</option><option>Roughly matched</option><option>Required slightly more than available</option><option>Required much more than available</option></select>
         </div>
         <div class="field">
           <label for="q19">Sleep per night</label>
-          <select id="q19"><option>8 hours or more</option><option>6 – 7 hours</option><option>4 – 5 hours</option><option selected>Less than 4 hours</option></select>
+          <select id="q19"><option value="" selected disabled>Select…</option><option>8 hours or more</option><option>6 – 7 hours</option><option>4 – 5 hours</option><option>Less than 4 hours</option></select>
         </div>
       </div>
 
       <div class="field">
         <label for="freetext">Describe your situation (optional — sharpens the guidance)</label>
-        <textarea id="freetext">I have three assignments due the same week and a part-time job, and I'm losing sleep trying to keep up.</textarea>
+        <textarea id="freetext" placeholder="e.g. I have three assignments due the same week…"></textarea>
       </div>
     </fieldset>
 
@@ -316,6 +316,12 @@
 
 <script>
 const API = "http://localhost:8000";
+
+function resetForm(){
+  document.querySelectorAll("select").forEach(sel => sel.selectedIndex = 0);
+  document.getElementById("freetext").value = "";
+}
+window.addEventListener("pageshow", resetForm);
 
 const RISK_ORB_COLORS = {
   Low:      ["#34D399", "#6EE7B7", "#17C3A2"],
@@ -360,6 +366,12 @@ function buildProfile(){
 }
 
 async function runCompare(){
+  const unanswered = [...document.querySelectorAll("select")].filter(sel => !sel.value);
+  if(unanswered.length){
+    unanswered[0].focus();
+    alert("Please answer all the dropdown questions first.");
+    return;
+  }
   const btn = document.getElementById("runBtn");
   const pane = document.getElementById("pane");
   const emptyState = document.getElementById("emptyState");

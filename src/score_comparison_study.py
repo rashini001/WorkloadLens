@@ -1,22 +1,4 @@
-"""
-Scores the blind comparison study (Chapter 3.6 / 5.7) — matches your
-Google Form's raw rater responses back to the private answer key (which
-response was actually WorkloadLens vs baseline per scenario) and runs
-paired statistical tests per criterion.
 
-PREREQUISITES:
-  1. outputs/reports/comparison_study_answer_key.json already exists
-     (from generate_comparison_study.py)
-  2. Your Google Form export has columns named like:
-     "Rate RESPONSE A - Profile 3 [Relevance]"
-     (the Google Forms grid format; Criterion is one of: Relevance, Actionability,
-     Cultural fit, Specificity). The older "Scenario <N> - Response <A/B> - <Criterion>"
-     format is also still accepted.
-  3. pip install scipy
-
-Usage:
-    python score_comparison_study.py "path/to/your Google Form export.csv"
-"""
 import argparse
 import json
 import re

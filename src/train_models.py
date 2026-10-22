@@ -1,18 +1,4 @@
-"""
-Trains and compares Random Forest, XGBoost and SVM classifiers on the
-processed workload dataset — supports RQ2 ("Which workload feature
-combinations most strongly predict poor academic time management
-outcomes ... and which model provides the most effective predictive
-performance?").
 
-Produces:
-  outputs/models/best_model.joblib      <- the best-performing classifier
-  outputs/models/scaler.joblib          <- fitted StandardScaler (for SVM/inference)
-  outputs/reports/model_comparison.csv  <- accuracy/F1/CV scores per model
-  outputs/reports/confusion_matrix_<model>.png
-  outputs/reports/feature_importance.png
-  outputs/reports/minimum_feature_set.json  <- RQ2's minimum-feature-set analysis
-"""
 import json
 import joblib
 import numpy as np

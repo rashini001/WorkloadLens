@@ -11,8 +11,7 @@ Endpoints:
     POST /api/classify   -> ML risk classification only
     POST /api/guidance    -> ML classification + RAG-grounded guidance
     POST /api/compare     -> RAG guidance AND baseline (no-RAG) guidance,
-                              side by side — used for the RQ3/RQ4 evaluation
-                              study in Chapter 3.6
+                              side by side — 
     GET  /                -> demo frontend
 """
 import sys
@@ -76,8 +75,8 @@ def guidance(req: ProfileRequest):
 @app.post("/api/compare")
 def compare(req: ProfileRequest):
     """RAG-grounded guidance vs. baseline (no retrieval) — for the blind
-    student rating study described in Chapter 3.6.
-    Also prints a TEST LOG (and saves it to test_log.txt) for Appendix D."""
+    student rating study
+    Also prints a TEST LOG (and saves it to test_log.txt) """
     try:
         risk_result = predict.predict_risk(req.profile)
 
