@@ -105,9 +105,6 @@ include retrieved passages.
 
 The thesis identifies the following technologies:
 
-  -----------------------------------------------------------------------
-  Technology                          Purpose
-  ----------------------------------- -----------------------------------
   Python                              Data preparation, machine-learning
                                       models, and pipeline
 
@@ -133,6 +130,7 @@ The thesis identifies the following technologies:
 
   GitHub                              Version control for source code,
                                       notebooks, and results
+                                      
   -----------------------------------------------------------------------
 
 ## Research Dataset and Knowledge Base
@@ -164,11 +162,6 @@ three knowledge-base layers listed above. Documents are cleaned and
 divided into chunks of approximately 200--400 tokens, embedded using
 Sentence Transformers, and stored in ChromaDB with metadata such as
 layer, title, source, and year.
-
-> **Data and privacy:** Do not commit survey responses, personally
-> identifiable information, API credentials, local model files, or other
-> restricted research materials to a public repository. Follow the
-> project's ethical-clearance conditions and data-sharing permissions.
 
 ## Research Results
 
