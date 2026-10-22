@@ -1,25 +1,4 @@
-"""
-Preprocessing pipeline for WorkloadLens.
 
-What this does:
-1. Loads the raw survey export (xlsx).
-2. Cleans column names and encodes every ordinal/categorical survey answer
-   into a numeric value (documented in ORDINAL_MAPS below).
-3. Engineers the target variable `workload_risk` (Low / Moderate / High) from
-   the four outcome questions (Q21 Late Tasks, Q22 Missed Classes,
-   Q23 Time Management, Q24 Workload Impact) — this is the label the ML
-   models in train_models.py learn to predict from the *workload* questions.
-4. Saves a fully numeric `processed.csv` plus a `label_encoders.json` so the
-   same encoding can be re-applied to a single new student profile at
-   prediction time (see predict.py).
-
-IMPORTANT — read before you defend this in your dissertation:
-The exact thresholds used to turn the four outcome questions into a
-Low/Moderate/High label (see `compute_risk_label`) are a *design decision*,
-not something derived from the literature. Show this function to your
-supervisor and be ready to justify the cut points in Chapter 3/4, or replace
-them with your own weighting if your supervisor prefers a different scheme.
-"""
 import json
 import pandas as pd
 import numpy as np

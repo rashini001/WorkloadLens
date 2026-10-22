@@ -1,13 +1,10 @@
 """
-Builds the three-layer RAG knowledge base described in Chapter 3.3:
+Builds the three-layer RAG knowledge base :
 parses the markdown source files in sample_docs/, splits them into the
 chunks already marked with `## chunk_id:` headers, embeds each chunk with a
 multilingual sentence-transformer, and stores them (+ metadata) in a local
 ChromaDB collection.
 
-Run this once after editing/replacing the markdown source files, and again
-any time you add new source documents to sample_docs/ or a new "real"
-sources directory.
 
 Usage:
     python build_kb.py                     # (re)builds from sample_docs/

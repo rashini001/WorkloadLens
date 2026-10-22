@@ -1,15 +1,4 @@
-"""
-Turns one new student's raw survey answers into:
-  - a workload risk classification (Low / Moderate / High)
-  - a confidence score
-  - the student's own top influential features (for that specific profile,
-    using the fitted model's global feature importances as a proxy — see
-    note in `top_influential_features`)
 
-This is what api.py calls, and what feeds the RAG retrieval query in
-rag_pipeline.py (per Chapter 3.4 "Output Integration": the ML risk
-classification + influential features become part of the retrieval query).
-"""
 import json
 import joblib
 import pandas as pd

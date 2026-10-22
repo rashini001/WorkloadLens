@@ -1,35 +1,4 @@
-"""
-Scores the RAG system on faithfulness and answer relevance (RAGAS) across
-your evaluation set (test_profiles.py) — fills in Chapter 5.6.2's
-"[number] workload profiles", faithfulness score, relevance score.
 
-PREREQUISITES before running:
-  1. pip install ragas datasets langchain-ollama langchain-huggingface
-  2. outputs/models/best_model.joblib must exist (train_models.py already run)
-  3. kb_store built (workloadlens_kb.py build already run)
-  4. Ollama running — strongly recommended: use the smaller llama3.2:3b
-     model for THIS script specifically, not the full llama3. RAGAS's
-     faithfulness/answer_relevancy metrics each make SEVERAL separate LLM
-     calls per profile internally (breaking the answer into claims, then
-     checking each one), so the grading overhead here is much higher than
-     a single normal generation call — on CPU-only hardware, llama3 is
-     usually too slow for this to finish in reasonable time.
-        set WORKLOADLENS_OLLAMA_MODEL=llama3.2:3b
-     (set this in the SAME terminal window, before running this script —
-     environment variables don't carry over between terminal sessions)
-  5. test_profiles.py filled in with your real evaluation set
-
-FIX in this version: RAGAS defaults to running many jobs IN PARALLEL with a
-short per-job timeout — fine against a cloud API, but wrong for a single
-local Ollama instance, which can only actually process one request at a
-time anyway. Running jobs in parallel against it just makes them all
-compete for the same compute and time out together. This version uses
-RAGAS's RunConfig to run jobs ONE AT A TIME with a much longer timeout,
-which is slower per-job but far more likely to actually finish.
-
-Usage:
-    python evaluate_ragas.py
-"""
 import json
 
 import predict

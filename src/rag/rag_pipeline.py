@@ -4,8 +4,7 @@ Retrieval-augmented generation pipeline (Chapter 3.5).
 UPDATED to use workloadlens_kb.py's search() as the retrieval backend
 instead of the earlier markdown-chunk ChromaDB collection — this is the
 real, PDF-sourced, 18+ document knowledge base, with retrieval filtered by
-the student's institution type and discipline (profile-based retrieval,
-per Chapter 3.3 and your KB metadata spreadsheet's own "Notes" sheet).
+the student's institution type and discipline 
 
 Generation backend unchanged: set WORKLOADLENS_LLM_BACKEND=ollama (default)
 or =anthropic, same as before.

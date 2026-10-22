@@ -1,21 +1,4 @@
-"""
-Computes Cronbach's alpha for the survey's Likert-scale items — fills
-Chapter 5.4.1's "Cronbach's alpha of [α], which is [above / below] 0.70".
 
-    python cronbach_alpha.py
-
-IMPORTANT: run this on your REAL survey data (after preprocessing.py has
-processed your real export, not the synthetic file), since alpha on
-synthetic/random data is meaningless.
-
-LIKERT_ITEMS below defaults to every 1-5 rated item in the survey (Q12 task-
-difficulty items + Q20 wellbeing/pressure items + Q23 self-rated outcomes).
-Reliability is normally reported per *construct* (a set of items meant to
-measure the same underlying thing), not across unrelated constructs lumped
-together — check with your supervisor whether Q12/Q20/Q23 are meant to form
-one scale or separate sub-scales, and adjust LIKERT_ITEMS (or compute alpha
-per group) accordingly before you quote a single alpha value in Chapter 5.
-"""
 import json
 import numpy as np
 import pandas as pd

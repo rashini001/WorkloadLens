@@ -1,16 +1,4 @@
-"""
-Computes EXACT workload-risk percentages by year of study, degree, and
-institution type from your real survey data — replaces the "about 15%...
-about 25%... read from the charts" approximations in Chapter 5.4.1 with
-precise cross-tabulation values.
 
-Uses the SAME risk-label logic (compute_risk_label) that produced your
-overall 60% Moderate / ~20% Low / ~20% High figures already quoted in the
-chapter, so these numbers are directly consistent with that sentence.
-
-Usage:
-    python exact_risk_crosstabs.py
-"""
 import json
 
 import pandas as pd

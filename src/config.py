@@ -1,6 +1,5 @@
 """
 Central configuration for WorkloadLens.
-Edit the paths here if you move the project or rename the raw data file.
 """
 from pathlib import Path
 

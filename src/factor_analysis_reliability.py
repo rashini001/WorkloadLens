@@ -1,37 +1,4 @@
-"""
-Exploratory Factor Analysis (EFA)-based reliability check — the correct
-single-wave, purely data-driven alternative to Cronbach's alpha when your
-items are a priori independent indicators rather than a known multi-item
-scale (see the discussion that led here: alpha on Q12/Q20/Q23 gave ~0.01-0.14,
-which is expected and NOT a data-quality problem for independent indicators,
-but isn't a reportable "reliability" number on its own).
 
-What this does, in order (this is the standard sequence reported in methods
-sections, so Chapter 5.4.1 can cite each step):
-
-1. KMO (Kaiser-Meyer-Olkin) test — checks whether your items have enough
-   shared correlation to make factor analysis meaningful at all.
-     KMO >= 0.60 is usually considered the minimum acceptable; below that,
-     factor analysis isn't appropriate for this item set, which is itself a
-     valid, citable, quantitative finding (not a failure).
-2. Bartlett's test of sphericity — checks whether the items correlate with
-   each other at all (p < .05 means yes, correlations are not just noise).
-3. If both checks pass: runs EFA (principal axis factoring), extracts
-   factors with eigenvalue > 1, and shows which items load on which factor.
-4. For any factor with 2+ items, computes Cronbach's alpha WITHIN that
-   factor — this is the methodologically correct grouping to report alpha
-   on, because it's derived from the data rather than guessed from the
-   questionnaire's question numbering.
-5. If KMO/Bartlett's fail, or no coherent factor structure emerges: this
-   prints the exact numbers to cite as evidence that these items are
-   independent single-item indicators (not a scale), which is the
-   Path-B-with-real-statistics-behind-it version of that argument.
-
-    pip install factor_analyzer
-    python factor_analysis_reliability.py
-
-Run on your REAL cleaned survey data (DATA_RAW), same as cronbach_alpha.py.
-"""
 import json
 import numpy as np
 import pandas as pd

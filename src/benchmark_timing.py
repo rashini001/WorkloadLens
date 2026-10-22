@@ -1,15 +1,4 @@
-"""
-Times each pipeline stage over N runs and reports mean/max — fills in
-Chapter 5.5's "[number] runs on [hardware description]" and Table 5.4.
 
-Drop this file into your existing src/ folder (next to predict.py), then:
-    python benchmark_timing.py
-    python benchmark_timing.py --runs 50
-
-Requires the model already trained (outputs/models/) and the KB already
-built (outputs/chroma_db/) — i.e. run this AFTER steps 4 and 5 from the
-README, and with Ollama/your chosen LLM backend running.
-"""
 import argparse
 import json
 import platform

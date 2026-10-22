@@ -1,16 +1,4 @@
-"""
-Descriptive statistics for the processed dataset — supports RQ1
-("What academic workload patterns are most commonly experienced ... and how
-do these patterns vary across year of study, discipline, and institution
-type?").
 
-Run after preprocessing.py. Produces:
-  outputs/reports/risk_distribution.png
-  outputs/reports/risk_by_year.png
-  outputs/reports/risk_by_degree.png
-  outputs/reports/risk_by_university.png
-  outputs/reports/summary_stats.csv
-"""
 import pandas as pd
 import matplotlib
 matplotlib.use("Agg")

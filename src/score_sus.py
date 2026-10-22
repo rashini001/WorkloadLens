@@ -1,23 +1,4 @@
-"""
-Scores System Usability Scale (SUS) responses — fills Chapter 5.8's mean/SD
-usability score.
 
-Standard SUS scoring (Brooke, 1986):
-  - Odd-numbered items (1,3,5,7,9):  score = rating - 1
-  - Even-numbered items (2,4,6,8,10): score = 5 - rating
-  - Sum all 10 scores, multiply by 2.5  ->  0-100 scale
-  - Above ~68 = above-average usability (this is a widely cited benchmark,
-    not a hard pass/fail line - report your mean against it either way)
-
-Usage:
-    python score_sus.py "path/to/your SUS Google Form export.csv"
-
-Expects your exported CSV to have exactly 10 rating columns, one per SUS
-item, each containing a 1-5 value, IN THE SAME ORDER as the 10 standard SUS
-questions (see the list printed by --show-questions). Any extra columns
-(timestamp, consent, etc.) are fine — just pass their count with
---skip-columns so this script knows which 10 columns are the actual ratings.
-"""
 import argparse
 import json
 

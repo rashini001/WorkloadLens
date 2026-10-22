@@ -1,24 +1,4 @@
-"""
-Your evaluation set — used by BOTH evaluate_ragas.py and
-generate_comparison_study.py, so your automated and human evaluation test
-the exact same profiles.
 
-These 12 profiles are built as a deliberate GRADIENT, not random picks —
-each one changes only 1-2 factors from its neighbours, so in Chapter 5 you
-can discuss which specific factors (overlap, part-time work, sleep, new/
-untaught content...) drove the biggest change in risk classification and
-guidance, rather than just "some profiles were worse than others". A few
-pairs are built to isolate ONE factor specifically:
-  - light_workload vs sleep_deprived_only: isolates sleep alone
-  - part_time_heavy_only vs light_workload: isolates part-time work alone
-  - heavy_workload vs heavy_workload_no_parttime: isolates part-time work
-    at the HIGH end of workload, not just the low end
-
-Every answer string below is copied exactly from your ORDINAL_MAPS / survey
-option text — don't retype these by hand elsewhere, copy from here, since a
-single typo (wrong dash character, missing word) will raise "Unseen
-category" in preprocessing.py / predict.py.
-"""
 
 TEST_PROFILES = [
     {
